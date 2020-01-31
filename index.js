@@ -1,32 +1,28 @@
-const { graphql, buildSchema } = require('graphql');
+const { makeExecutableSchema } = require('graphql-tools')
 const express = require('express');
-const gplMiddleware = require('express-graphql');
+const gqlMiddleware = require('express-graphql');
 const  { readFileSync } = require('fs');
 const { join } = require('path');
+const resolvers = require('./lib/resolver');
 
 const app = express();
 const port = process.env.port || 3000;
 
 
 // schema
-const schema = buildSchema(
-    readFileSync(
-        join(__dirname, 'lib', 'schema.graphql'),
-        'utf-8'
-    )
+const typeDefs = readFileSync(
+    join(__dirname, 'lib', 'schema.graphql'),
+    'utf-8'
 );
-
-// resolvers
-const resolvers = {
-    hello: () => 'Hola mundo'
-};
+const schema = makeExecutableSchema({typeDefs, resolvers});
 
 //middleware para usar graphoql en la api
-app.use(`/api`, gplMiddleware({
-    schema: schema,
-    rootValue: resolvers,
-    graphiql: true
-}));
+app.use('/api', gqlMiddleware({
+  schema: schema,
+  rootValue: resolvers,
+  graphiql: true
+}))
+
 
 app.listen(port, ()=>{
     console.log('Servidor iniciando')

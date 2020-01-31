@@ -1,3 +1,14 @@
+type Course {
+    _id: ID!
+    title: String!
+    teacher: String
+    description: String!
+    topic: String
+}
+
 type Query {
-    hello: String
+    "Retorna un array de cursos"
+    getCourses: [Course]
+    "Obtener un unico curso por medio del ID que es un campo requerido"
+    getCourse(id: ID!): Course
 }
