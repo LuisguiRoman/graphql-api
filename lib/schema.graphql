@@ -6,9 +6,52 @@ type Course {
     topic: String
 }
 
+type Student {
+    _id: ID!
+    name: String!
+    email: String!
+}
+
 type Query {
     "Retorna un array de cursos"
     getCourses: [Course]
     "Obtener un unico curso por medio del ID que es un campo requerido"
     getCourse(id: ID!): Course
+    "Retorna un array de estudiantes"
+    getStudents: [Course]
+    "Obtener un unico estudiante"
+    getStudent(id: ID!): Course
+}
+
+input CourseEditInput {
+    title: String!
+    teacher: String
+    description: String!
+    topic: String
+}
+input CourseInput {
+    title: String
+    teacher: String
+    description: String
+    topic: String
+}
+
+input StudentInput {
+    name: String!
+    email: String!
+}
+input StudentEditInput {
+    name: String
+    email: String
+}
+
+type Mutation {
+    "Crear curso, mutation se usa para insertar"
+    createCourse(input: CourseInput!) : Course
+    "Edita un curso"
+    editCourse(_id: ID!, input: CourseEditInput) : Course
+    "Crear Estudiante"
+    createStudent(input: StudentInput!) : Student
+    "Editar Estudiante"
+    editStudent(_id: ID!, input: StudentEditInput!) : Student
 }
