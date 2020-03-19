@@ -19,9 +19,9 @@ const schema = makeExecutableSchema({typeDefs, resolvers});
 
 //middleware para usar graphoql en la api
 app.use('/api', gqlMiddleware({
-  schema: schema,
-  rootValue: resolvers,
-  graphiql: true
+    schema: schema,
+    rootValue: resolvers,
+    graphiql: true
 }))
 
 
