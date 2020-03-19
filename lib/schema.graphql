@@ -31,7 +31,7 @@ input CourseEditInput {
     topic: String
 }
 input CourseInput {
-    title: String
+    title: String!
     teacher: String
     description: String
     topic: String
