@@ -1,16 +1,41 @@
+"Valida los tipos de nivel"
+
+enum Level{
+    principiante
+    intermedio
+    avanzado
+}
+
+union GlobalSearch = Course | Student | Monitor
+
 type Course {
     _id: ID!
     title: String!
     teacher: String
     description: String!
-    topic: String,
+    topic: String @deprecated,
     people: [Student]
+    level: Level
 }
 
-type Student {
+interface Person {
     _id: ID!
     name: String!
     email: String!
+}
+
+type Student implements Person {
+    _id: ID!
+    name: String!
+    email: String!
+    avatar: String
+}
+
+type Monitor implements Person {
+    _id: ID!
+    name: String!
+    email: String!
+    phone: String
 }
 
 type Query {
@@ -19,9 +44,11 @@ type Query {
     "Obtener un unico curso por medio del ID que es un campo requerido"
     getCourse(id: ID!): Course
     "Retorna un array de estudiantes"
-    getStudents: [Course]
+    getPeople: [Person]
     "Obtener un unico estudiante"
-    getStudent(id: ID!): Course
+    getPerson(id: ID!): Person
+    "ejecuta una busqueda global"
+    searchItems(keyword: String!): [GlobalSearch]
 }
 
 input CourseEditInput {
@@ -35,15 +62,20 @@ input CourseInput {
     teacher: String
     description: String
     topic: String
+    level: Level
 }
 
-input StudentInput {
+input PersonInput {
     name: String!
     email: String!
+    phone: String
+    avatar: String
 }
-input StudentEditInput {
+input PersontEditInput {
     name: String
     email: String
+    phone: String
+    avatar: String
 }
 
 type Mutation {
@@ -51,10 +83,10 @@ type Mutation {
     createCourse(input: CourseInput!) : Course
     "Edita un curso"
     editCourse(_id: ID!, input: CourseEditInput) : Course
-    "Crear Estudiante"
-    createStudent(input: StudentInput!) : Student
-    "Editar Estudiante"
-    editStudent(_id: ID!, input: StudentEditInput!) : Student
+    "Crear persona"
+    createPerson(input: PersonInput!) : Person
+    "Editar persona"
+    editPerson(_id: ID!, input: PersontEditInput!) : Person
     "Agregar persona un curso"
     addPeople(courseID: ID!, personID: ID!): Course
 }
